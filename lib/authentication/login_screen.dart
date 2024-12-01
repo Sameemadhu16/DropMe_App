@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Colors.grey,
                           fontSize: 15,
                         )),
-                    const SizedBox(height: 15,),
+                    const SizedBox(height: 22,),
                     TextField(
                         controller: passwordTextEditingController,
                         obscureText: true,
@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Colors.grey,
                           fontSize: 15,
                         )),
-                    const SizedBox(height: 20,),
+                    const SizedBox(height: 22,),
 
                       ElevatedButton(
                         onPressed: ()

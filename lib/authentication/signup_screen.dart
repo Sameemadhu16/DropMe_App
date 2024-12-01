@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uber_app_clone/authentication/login_screen.dart';
+import 'package:uber_app_clone/methods/common_methods.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -8,11 +9,18 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends State<SignUpScreen> 
+{
   TextEditingController usernameTextEditingController = TextEditingController();
-  TextEditingController userPhoneTextEditingController = TextEditingController();
+  TextEditingController userPhoneTextEditingController =
+      TextEditingController();
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
+  CommonMethods cMethods = CommonMethods();
+
+  checkIfNetworkIsAvailable() {
+    cMethods.checkConnectivity(context);//object oriented approach
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               //text form field + button
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 12,horizontal: 22),
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 22),
                 child: Column(
                   children: [
                     TextField(
@@ -62,7 +70,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         fontSize: 15,
                       ),
                     ),
-                    const SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 15,
+                    ),
                     TextField(
                       controller: userPhoneTextEditingController,
                       keyboardType: TextInputType.text,
@@ -82,7 +92,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         fontSize: 15,
                       ),
                     ),
-                    const SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 22,
+                    ),
                     TextField(
                         controller: emailTextEditingController,
                         keyboardType: TextInputType.emailAddress,
@@ -101,7 +113,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           color: Colors.grey,
                           fontSize: 15,
                         )),
-                    const SizedBox(height: 15,),
+                    const SizedBox(
+                      height: 22,
+                    ),
                     TextField(
                         controller: passwordTextEditingController,
                         obscureText: true,
@@ -121,38 +135,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           color: Colors.grey,
                           fontSize: 15,
                         )),
-                    const SizedBox(height: 20,),
-
-                      ElevatedButton(
-                        onPressed: ()
-                        {
-
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple,
-                          padding: EdgeInsets.symmetric(horizontal: 80, vertical: 10),
-                        ),
-                        child: const Text(
-                          "Sign Up",
-                          ),
-                        ),
+                    const SizedBox(
+                      height: 22,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        checkIfNetworkIsAvailable();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.purple,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 80, vertical: 10),
+                      ),
+                      child: const Text(
+                        "Sign Up",
+                      ),
+                    ),
                   ],
-
                 ),
               ),
 
-                // const SizedBox(height: 12,),
+              // const SizedBox(height: 12,),
               //text button
               TextButton(
-                onPressed: ()
-                {
-                  Navigator.push(context, MaterialPageRoute(builder: (c) => LoginScreen()));
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (c) => LoginScreen()));
                 },
                 child: const Text(
                   "Already have an account? Login here",
                   style: TextStyle(
                     color: Colors.grey,
-                  
                   ),
                 ),
               )
