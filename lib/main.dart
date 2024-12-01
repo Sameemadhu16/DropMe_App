@@ -17,12 +17,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: Colors.black,
         ),
-        home: HomeScreen(),
-        routes: {
-          '/signup': (context) =>
-              const SignUpScreen(), // Add SignUpScreen route
-          '/login': (context) => const LoginScreen(),
-        },
+        home: LoginScreen(),
+        // routes: {
+        //   '/signup': (context) =>
+        //       const SignUpScreen(), // Add SignUpScreen route
+        //   '/login': (context) => const LoginScreen(),
+        // },
         debugShowCheckedModeBanner: false,
       ),
     );
