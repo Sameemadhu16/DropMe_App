@@ -9,8 +9,7 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> 
-{
+class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController usernameTextEditingController = TextEditingController();
   TextEditingController userPhoneTextEditingController =
       TextEditingController();
@@ -19,8 +18,41 @@ class _SignUpScreenState extends State<SignUpScreen>
   CommonMethods cMethods = CommonMethods();
 
   checkIfNetworkIsAvailable() {
-    cMethods.checkConnectivity(context);//object oriented approach
+    cMethods.checkConnectivity(context); //object oriented approach
+
+    signUpFormValidation();
   }
+
+  void signUpFormValidation() {
+  String username = usernameTextEditingController.text.trim();
+  String phone = userPhoneTextEditingController.text.trim();
+  String email = emailTextEditingController.text.trim();
+  String password = passwordTextEditingController.text.trim();
+
+  if (username.isEmpty) {
+    cMethods.displaySnackBar("Username cannot be empty", context);
+  } else if (username.length < 3) {
+    cMethods.displaySnackBar("Your name must be 4 or more characters", context);
+  } else if (phone.isEmpty) {
+    cMethods.displaySnackBar("Phone number cannot be empty", context);
+  } else if (phone.length != 10) {
+    cMethods.displaySnackBar("Your phone number must be 10 characters", context);
+  } else if (!RegExp(r'^[0-9]+$').hasMatch(phone)) {
+    cMethods.displaySnackBar("Your phone number must contain only digits", context);
+  } else if (email.isEmpty) {
+    cMethods.displaySnackBar("Email cannot be empty", context);
+  } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+    cMethods.displaySnackBar("Please enter a valid email", context);
+  } else if (password.isEmpty) {
+    cMethods.displaySnackBar("Password cannot be empty", context);
+  } else if (password.length < 6) {
+    cMethods.displaySnackBar("Your password must be at least 6 characters", context);
+  } else if (!RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$').hasMatch(password)) {
+    cMethods.displaySnackBar("Password must contain uppercase, lowercase, number, and special character", context);
+  } else {
+    // Register the user
+  }
+}
 
   @override
   Widget build(BuildContext context) {
