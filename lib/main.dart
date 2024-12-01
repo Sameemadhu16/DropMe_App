@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'authentication/signup_screen.dart'; // Import the SignUpScreen
 import 'authentication/login_screen.dart';
 
-void main() {
+Future<void> main() async
+{
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
