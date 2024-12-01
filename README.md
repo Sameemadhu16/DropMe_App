@@ -1,2 +1,4 @@
 # uber_app_clone
-uber app clone using flutter, google api ...
+ Build Flutter ios & android Uber Clone Application
+ Admin WEB Portal using Firebase as Backend
+ Firebase Cloud Messaging for Real Time Push Notifications Service.
