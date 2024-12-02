@@ -8,7 +8,6 @@ import 'package:uber_app_clone/methods/common_methods.dart';
 import 'package:uber_app_clone/widgets/loading_dailog.dart';
 import 'package:uber_app_clone/pages/home.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -41,65 +40,71 @@ void signinFormValidation(BuildContext context) {
     cMethods.displaySnackBar("Please enter a valid email", context);
   } else if (password.isEmpty) {
     cMethods.displaySnackBar("Password cannot be empty", context);
-  } else if (password.length < 6) {
-    cMethods.displaySnackBar(
-        "Your password must be at least 6 characters", context);
-  } else if (!RegExp(
-          r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$')
-      .hasMatch(password)) {
-    cMethods.displaySnackBar(
-        "Password must contain uppercase, lowercase, number, and special character",
-        context);
   } else {
-    signInUser(context);
+    signInUser(context, email, password);
   }
 }
 
-Future<void> signInUser(BuildContext context) async {
+void signInUser(BuildContext context, String email, String password) async {
+  // Show loading dialog
   showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (BuildContext context) => LoadingDailog(
-      messageText: "Allowing you to Login...",
-    ),
+    builder: (BuildContext context) {
+      return LoadingDailog(messageText: "Signing in, Please wait...");
+    },
   );
 
   try {
-    final User? userFirebase = (await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailTextEditingController.text.trim(),
-      password: passwordTextEditingController.text.trim(),
+    final User? userFirebase =
+        (await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
     ))
-        .user;
+            .user;
 
     if (!context.mounted) return;
     Navigator.pop(context); // Close the loading dialog
 
     if (userFirebase != null) {
-      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users").child(userFirebase.uid);
-      final snap = await usersRef.get(); // Updated from .once() to .get()
+      DatabaseReference usersRef = FirebaseDatabase.instance
+          .ref()
+          .child("users")
+          .child(userFirebase.uid);
+      final snap = await usersRef.get();
 
       if (snap.exists && snap.value != null) {
         final userData = snap.value as Map;
         if (userData["blockStatus"] == "no") {
           userName = userData["name"];
-          Navigator.push(context, MaterialPageRoute(builder: (c) => HomePage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (c) => HomePage()));
         } else {
           FirebaseAuth.instance.signOut();
-          cMethods.displaySnackBar("You are blocked. Contact support: company@gmail.com", context);
+          cMethods.displaySnackBar(
+              "You are blocked. Contact support: company@gmail.com", context);
         }
       } else {
         FirebaseAuth.instance.signOut();
         cMethods.displaySnackBar("User not found", context);
       }
-    } else {
-      cMethods.displaySnackBar("Sign in failed. Please try again.", context);
     }
-  } catch (e) {
-    Navigator.pop(context); // Ensure the loading dialog is dismissed on error
-    cMethods.displaySnackBar("Error: ${e.toString()}", context);
+  } on FirebaseAuthException catch (e) {
+    Navigator.pop(context); // Close the loading dialog
+    if (e.code == 'user-not-found') {
+      cMethods.displaySnackBar("Email not found", context);
+    } else if (e.code == 'wrong-password') {
+      cMethods.displaySnackBar("Your password is wrong", context);
+    } else {
+      cMethods.displaySnackBar("Sign-in failed: ${e.message}", context);
+    }
+  } catch (error) {
+    print("Error during sign-in: $error");
+    if (!context.mounted) return;
+    Navigator.pop(context); // Close the loading dialog
+    cMethods.displaySnackBar("Sign-in failed: $error", context);
   }
 }
-
 
 class _LoginScreenState extends State<LoginScreen> {
   @override
