@@ -133,7 +133,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: 250,
               ),
               const Text(
-                "Create a User\'s Account",
+                "Create a User's Account",
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,

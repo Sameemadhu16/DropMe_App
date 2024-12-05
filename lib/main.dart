@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'authentication/signup_screen.dart'; // Import the SignUpScreen
+// Import the SignUpScreen
 import 'authentication/login_screen.dart';
 
 Future<void> main() async

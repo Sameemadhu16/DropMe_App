@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
               mapType: MapType.normal,
               myLocationButtonEnabled: true,
               initialCameraPosition: googlePlexInitialPosition,
-              onMapCreated: (GoogleMapController mapController) 
+              onMapCreated: (GoogleMapController mapController)
               {
                 controllerGoogleMap = mapController;
                 googleMapCompleterController.complete(controllerGoogleMap);
