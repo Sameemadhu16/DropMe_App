@@ -114,8 +114,10 @@ class _LoginScreenState extends State<LoginScreen> {
         title: const Text('Login'),
       ),
       body: SingleChildScrollView(
-        child: Padding(
+        child: Container(
+          color: const Color.fromARGB(255, 6, 24, 51), // Set the background color to dark blue
           padding: EdgeInsets.all(16.0),
+          height: MediaQuery.of(context).size.height, // Ensure full screen height
           child: Column(
             children: [
               Image.asset(
@@ -179,19 +181,40 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(
                       height: 22,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        checkIfNetworkIsAvailable(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 80, vertical: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [ Colors.blue, Colors.pinkAccent],
+
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(12), // Rounded corners
                       ),
-                      child: const Text(
-                        "Login",
+                      child: ElevatedButton(
+                        onPressed: () {
+                          checkIfNetworkIsAvailable(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors
+                              .transparent, // Must be transparent to show gradient
+                          shadowColor: Colors
+                              .transparent, // Removes shadow to match gradient
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 80, vertical: 10),
+                        ),
+                        child: const Text(
+                          "Login",
+                          style: TextStyle(
+                            color: Colors
+                                .white, // Ensure text is visible on the gradient
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
