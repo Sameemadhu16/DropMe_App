@@ -115,9 +115,11 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: const Color.fromARGB(255, 6, 24, 51), // Set the background color to dark blue
+          color: const Color.fromARGB(
+              255, 6, 24, 51), // Set the background color to dark blue
           padding: EdgeInsets.all(16.0),
-          height: MediaQuery.of(context).size.height, // Ensure full screen height
+          height:
+              MediaQuery.of(context).size.height, // Ensure full screen height
           child: Column(
             children: [
               Image.asset(
@@ -126,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 250,
               ),
               const Text(
-                "Login to your Account",
+                "Welcome Back! Please Log In",
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
@@ -183,12 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [ Colors.blue, Colors.pinkAccent],
-
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+                        color: Colors.white,
                         borderRadius:
                             BorderRadius.circular(12), // Rounded corners
                       ),
@@ -208,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           "Login",
                           style: TextStyle(
                             color: Colors
-                                .white, // Ensure text is visible on the gradient
+                                .black, // Ensure text is visible on the gradient
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),

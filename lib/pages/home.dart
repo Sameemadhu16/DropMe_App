@@ -38,18 +38,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          GoogleMap(
+      body: Container(
+        color: const Color.fromARGB(255, 6, 24, 51), // Set the background color to dark blue
+        padding: EdgeInsets.all(16.0),
+        height: MediaQuery.of(context).size.height, // Ensure full screen height
+        child: Stack(
+          children: [
+            GoogleMap(
               mapType: MapType.normal,
               myLocationButtonEnabled: true,
               initialCameraPosition: googlePlexInitialPosition,
               onMapCreated: (GoogleMapController mapController) {
                 controllerGoogleMap = mapController;
-                updateMapTheme(controllerGoogleMap!);//use of null assertion operator100% sure that controllerGoogleMap is not null at this point
+                updateMapTheme(controllerGoogleMap!); // Use of null assertion operator
                 googleMapCompleterController.complete(controllerGoogleMap);
-              }),
-        ],
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

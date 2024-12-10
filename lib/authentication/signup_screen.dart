@@ -22,7 +22,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   CommonMethods cMethods = CommonMethods();
 
   void checkIfNetworkIsAvailable() async {
-    bool isConnected = await cMethods.checkConnectivity(context); // Ensure checkConnectivity returns a boolean
+    bool isConnected = await cMethods.checkConnectivity(
+        context); // Ensure checkConnectivity returns a boolean
 
     if (isConnected) {
       signUpFormValidation();
@@ -70,51 +71,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
- Future<void> registerNewUser() async {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) => LoadingDailog(
-      messageText: "Registering your account...",
-    ),
-  );
+  Future<void> registerNewUser() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => LoadingDailog(
+        messageText: "Registering your account...",
+      ),
+    );
 
-  try {
-    final User? userFirebase = (await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-      email: emailTextEditingController.text.trim(),
-      password: passwordTextEditingController.text.trim(),
-    ))
-        .user;
+    try {
+      final User? userFirebase =
+          (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailTextEditingController.text.trim(),
+        password: passwordTextEditingController.text.trim(),
+      ))
+              .user;
 
-    if (userFirebase != null) {
-      print("User registered successfully with UID: ${userFirebase.uid}");
-      
-      DatabaseReference usersRef =
-          FirebaseDatabase.instance.ref().child("users").child(userFirebase.uid);
+      if (userFirebase != null) {
+        print("User registered successfully with UID: ${userFirebase.uid}");
 
-      Map userDataMap = {
-        "name": usernameTextEditingController.text.trim(),
-        "email": emailTextEditingController.text.trim(),
-        "phone": userPhoneTextEditingController.text.trim(),
-        "id": userFirebase.uid,
-        "blockStatus": "no",
-      };
+        DatabaseReference usersRef = FirebaseDatabase.instance
+            .ref()
+            .child("users")
+            .child(userFirebase.uid);
 
-      await usersRef.set(userDataMap);
-      print("User data saved to the database.");
-      
+        Map userDataMap = {
+          "name": usernameTextEditingController.text.trim(),
+          "email": emailTextEditingController.text.trim(),
+          "phone": userPhoneTextEditingController.text.trim(),
+          "id": userFirebase.uid,
+          "blockStatus": "no",
+        };
+
+        await usersRef.set(userDataMap);
+        print("User data saved to the database.");
+
+        if (!context.mounted) return;
+        Navigator.pop(context); // Close the loading dialog
+        Navigator.push(context, MaterialPageRoute(builder: (c) => HomePage()));
+      }
+    } catch (error) {
+      print("Error during registration: $error");
       if (!context.mounted) return;
       Navigator.pop(context); // Close the loading dialog
-      Navigator.push(context, MaterialPageRoute(builder: (c) => HomePage()));
+      cMethods.displaySnackBar("Registration failed: $error", context);
     }
-  } catch (error) {
-    print("Error during registration: $error");
-    if (!context.mounted) return;
-    Navigator.pop(context); // Close the loading dialog
-    cMethods.displaySnackBar("Registration failed: $error", context);
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +127,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: const Color.fromARGB(255, 6, 24, 51), // Set the background color to dark blue
+          color: const Color.fromARGB(
+              255, 6, 24, 51), // Set the background color to dark blue
           padding: EdgeInsets.all(16.0),
           height: MediaQuery.of(context).size.height,
           child: Column(
@@ -236,12 +240,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [ Colors.blue, Colors.pinkAccent],
-
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+                        color: Colors.white,
                         borderRadius:
                             BorderRadius.circular(12), // Rounded corners
                       ),
@@ -261,7 +260,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           "Login",
                           style: TextStyle(
                             color: Colors
-                                .white, // Ensure text is visible on the gradient
+                                .black, // Ensure text is visible on the gradient
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
