@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uber_app_clone/global/global_var.dart';
 
@@ -17,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   final Completer<GoogleMapController> googleMapCompleterController =
       Completer<GoogleMapController>();
   GoogleMapController? controllerGoogleMap;
+  Position? currentPositionOfUser;
 
   void updateMapTheme(GoogleMapController controller) {
     getJsonFileFromThemes("themes/night_style.json")
@@ -33,6 +35,16 @@ class _HomePageState extends State<HomePage> {
   setGoogleMapStyle(
       String googleMapStyle, GoogleMapController controller) async {
     controller.setMapStyle(googleMapStyle);
+  }
+
+  getCurrentLiveLocation() async
+  {
+    Position positionOfUser = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
+    currentPositionOfUser = positionOfUser;
+    LatLng positionOfUserInLatLng = LatLng(currentPositionOfUser!.latitude, currentPositionOfUser!.longitude);
+
+    CameraPosition cameraPosition = CameraPosition(target: positionOfUserInLatLng, zoom: 15);
+    controllerGoogleMap!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
   @override
@@ -52,6 +64,8 @@ class _HomePageState extends State<HomePage> {
                 controllerGoogleMap = mapController;
                 updateMapTheme(controllerGoogleMap!); // Use of null assertion operator
                 googleMapCompleterController.complete(controllerGoogleMap);
+
+                getCurrentLiveLocation();
               },
             ),
           ],
